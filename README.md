@@ -14,26 +14,6 @@
 - **Live Streaming:** Server-Sent Events (SSE) stream the agents' live progress to a React frontend.
 - **Serverless Ready:** Built to deploy effortlessly to Vercel (both FastAPI backend and React frontend).
 
-## Architecture Diagram
-
-```mermaid
-flowchart TD
-    A[Planner Agent] -->|Sub-questions & Queries| B{Parallel Researchers}
-    B -->|NewsAPI| C[Article Extractor]
-    B -->|Guardian API| C
-    B -->|NYT API| C
-    B -->|Tavily Web Search| C
-    C -->|Raw Articles| D[Fact-Checker Agent]
-    D -->|Extracted Claims & Corroboration| E[Bias Analyst Agent]
-    E -->|Sentiment & Framing Scores| F[Critic Agent]
-    
-    F -->|Coverage Insufficient (Refine)| A
-    F -->|Coverage Approved (Pass)| G[Writer Agent]
-    
-    G --> H[Final Structured Briefing]
-```
-
-*(UI Screenshots coming soon...)*
 
 ## Tech Stack
 
