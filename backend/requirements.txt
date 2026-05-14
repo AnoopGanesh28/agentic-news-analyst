@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+langgraph
+langchain
+langchain-openai
+newsapi-python
+newspaper3k
+pydantic

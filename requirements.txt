@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langgraph
+langchain
+langchain-groq
+langchain-community
+newsapi-python
+newspaper3k
+pydantic
+tavily-python
+python-dotenv
+httpx
+requests
