@@ -1,13 +1,13 @@
 """Tavily Search API tool wrapper.
 
-Uses the Tavily Python client to perform real-time web searches optimized
+Uses the langchain-tavily package to perform real-time web searches optimized
 for LLM agents, then normalizes results into the project's Article schema.
 """
 
 import os
 
 from dotenv import load_dotenv
-from langchain_community.tools import TavilySearchResults
+from langchain_tavily import TavilySearch
 from langchain_core.tools import StructuredTool
 
 load_dotenv()
@@ -28,8 +28,16 @@ def search_tavily(query: str, max_results: int = 5) -> list[dict]:
     if not api_key:
         raise ValueError("TAVILY_API_KEY environment variable is not set.")
 
-    tool = TavilySearchResults(max_results=max_results)
-    results = tool.invoke(query)
+    tool = TavilySearch(max_results=max_results)
+    raw = tool.invoke(query)
+
+    # TavilySearch returns a dict with a "results" key containing the list
+    if isinstance(raw, dict):
+        results = raw.get("results", [])
+    elif isinstance(raw, list):
+        results = raw
+    else:
+        results = []
 
     articles = []
     for result in results:
