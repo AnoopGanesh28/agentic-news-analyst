@@ -17,7 +17,7 @@ from backend.graph.state import GraphState
 
 load_dotenv()
 
-PLANNER_MODEL = "deepseek-r1-distill-llama-70b"
+PLANNER_MODEL = "llama-3.3-70b-versatile"
 
 SYSTEM_PROMPT = """You are a senior investigative research planner. Given a news topic, your job is to:
 

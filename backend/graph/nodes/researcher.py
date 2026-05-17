@@ -10,7 +10,7 @@ import os
 
 from dotenv import load_dotenv
 
-from backend.graph.state import GraphState
+from backend.graph.state import ResearcherState
 from backend.tools.newsapi import search_newsapi
 from backend.tools.guardian import search_guardian
 from backend.tools.nytimes import search_nytimes
@@ -99,41 +99,25 @@ def _search_source(source: str, queries: list[str]) -> list[dict]:
     return all_articles
 
 
-def researcher_node(state: GraphState) -> dict:
-    """Researcher node: fetches articles from all news APIs based on planner queries.
+def researcher_node(state: ResearcherState) -> dict:
+    """Researcher node (Parallelized): fetches articles from a single news API.
 
     Reads:
-        state["search_queries"] — dict mapping source names to query lists.
+        state["source"] — The API source name.
+        state["queries"] — List of search queries.
 
     Returns:
-        dict with "articles" key containing deduplicated, enriched article list.
+        dict with "raw_articles" key containing raw search results.
     """
-    search_queries = state.get("search_queries", {})
+    source = state.get("source")
+    queries = state.get("queries", [])
 
-    if not search_queries:
-        return {"articles": []}
+    if not source or not queries:
+        return {"raw_articles": []}
 
-    # Collect articles from all sources
-    all_articles = []
-    for source, queries in search_queries.items():
-        source_articles = _search_source(source, queries)
-        all_articles.extend(source_articles)
+    # Collect articles from this single source
+    source_articles = _search_source(source, queries)
 
-    # Deduplicate by URL
-    unique_articles = _deduplicate_articles(all_articles)
+    print(f"[Researcher - {source}] Collected {len(source_articles)} raw articles")
 
-    # Enrich truncated articles with full text via Newspaper3k
-    enriched_articles = _enrich_with_extractor(unique_articles)
-
-    # Filter out articles with no meaningful text
-    final_articles = [
-        a for a in enriched_articles
-        if a.get("full_text", "").strip()
-    ]
-
-    print(
-        f"[Researcher] Collected {len(all_articles)} raw -> "
-        f"{len(unique_articles)} unique -> {len(final_articles)} with text"
-    )
-
-    return {"articles": final_articles}
+    return {"raw_articles": source_articles}

@@ -17,7 +17,7 @@ from backend.graph.state import GraphState
 
 load_dotenv()
 
-CRITIC_MODEL = "deepseek-r1-distill-llama-70b"
+CRITIC_MODEL = "llama-3.3-70b-versatile"
 
 SYSTEM_PROMPT = """You are an exacting editor-in-chief reviewing an investigative research report.
 Your job is to determine if the collected articles and factual claims adequately answer the original sub-questions.

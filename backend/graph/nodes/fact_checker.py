@@ -17,7 +17,7 @@ from backend.graph.state import GraphState
 
 load_dotenv()
 
-FACT_CHECKER_MODEL = "deepseek-r1-distill-llama-70b"
+FACT_CHECKER_MODEL = "llama-3.3-70b-versatile"
 
 SYSTEM_PROMPT = """You are an expert fact-checker and investigative journalist.
 Your task is to analyze a set of news articles and extract the key factual claims.
